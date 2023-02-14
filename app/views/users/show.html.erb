@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+
+<h1> Profile Page </h1>
+
+
+
+<%= @user.name %>
+<%= image_tag @user.photo.url, class: "img-profile" %>
+
+<h3><%= pluralize(@user.posts.count, 'post') %></h3>
+<br>
+
+<% @user.posts.each do |post| %>
+  <%= image_tag post.photo.url, class: "img-small" %>
+  <br/>
+<% end %>
+
+  <strong>Email:</strong>
+  <%= @user.email %>
+
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

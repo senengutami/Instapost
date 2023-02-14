@@ -1,0 +1,49 @@
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-4"></div>
+
+    <div class="col-4">
+      <% @posts.each do |post| %>
+        <%= post.user.name %>
+        <%= image_tag post.user.photo.url, class: "img-profile" %>
+        <%= image_tag post.photo.url, class: "img-small" %>
+        <%= post.description %>
+        <br>
+
+        <% if post.user == current_user %>
+        <br>
+          <%= link_to 'Edit Post', edit_post_path( post.id) %><br>
+          <%= link_to 'Delete Post', post_path(post.id), method: :delete %>
+        <% end %>
+        <br>
+        <span id="likes_container_<%= post.id%>">
+          <%= render partial: 'likes', locals: {post: post} %>
+        </span>
+
+        <% post.comments.each do |comment| %>
+          <p><%= comment.user.name %>
+          <%= comment.text %></p>
+          <%= link_to 'Delete', post_comment_path(post_id: post.id, id: comment.id), method: :delete %>
+          <br>
+        <% end %>
+
+
+
+        <% if current_user.present? %>
+          <%= simple_form_for Comment.new, url: post_comments_path(post), method: :post, html: { class: 'form-horizontal' } do |f| %>
+            <%= f.input :text, label: 'Comment', placeholder: 'Add a comment...' %>
+            <%= f.submit 'Post', class: 'btn btn-primary btn-block' %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <div id="infinite-scrolling">
+  <%= will_paginate @products %>
+</div>
+    </div>
+    <div class="col-4"></div>
+  </div>
+</div>
+
